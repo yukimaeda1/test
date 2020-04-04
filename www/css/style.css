@@ -1,0 +1,407 @@
+/* background */
+.background{
+    background-image: url("../img/background.PNG");
+    /* 画像を常に天地左右の中央に配置 */
+    background-position: center center;
+    
+    /* 画像をタイル状に繰り返し表示しない */
+    background-repeat: no-repeat;
+    
+    /* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+    background-attachment: fixed;
+    
+    /* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+    background-size: cover;
+    
+    /* 背景画像が読み込まれる前に表示される背景のカラー */
+    background-color: white;
+}
+
+/* login-btn */
+.login {
+  display: inline-block;
+  margin:10px auto;
+  text-align: center;
+}
+
+/* Icons */
+a.login {
+  color:#fff;
+  background: #ffa3d1;
+  border-radius:4px;
+  text-align:center;
+  font-size:30px;
+  text-decoration:none;
+  font-family:fontawesome;
+  position: relative;
+  display: inline-block;
+  width:50px;
+  height:50px;
+  padding-top:12px;
+  margin:0 2px;
+  -o-transition:all .5s;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  transition: all .5s;
+   -webkit-font-smoothing: antialiased;
+}
+
+a.login:hover {
+  background: #c993ff;
+}
+
+/* for regist */
+.login-btn  {
+  text-align: center;
+	list-style:none;
+	display: flex;
+  flex-direction: column;
+	flex-wrap:wrap;
+	padding:0;
+  margin-top:-70%;
+}
+.loginList__item {
+  align-self: center;
+	height:30px;
+  width: 250px;
+	line-height:50px;
+	text-align:center;
+  color: white;
+}
+.loginList__link {
+	display:block;
+	color:#ffffff;
+	padding:0 20px;
+	text-decoration: none;
+	transition: .2s;
+	border-radius: 5px;
+}
+.loginList__link::before{
+	font-size:16px;
+}
+.loginList__link::after{
+	content:attr(title);
+	font-size:14px;
+	font-weight:700;
+	vertical-align: top;
+	margin-left:5px;
+} 
+
+.loginList__link.icon-regist{background:#ff69b4;}
+.loginList__link.icon-regist:hover{color:#ff69b4; background:#ffffff; border-color:#ff69b4;}
+
+/* rules */
+.rules
+{
+  text-align: center;
+	margin:80% auto;
+  padding: 5px;
+  width: 70%;
+}
+
+a.rules {
+  text-decoration: none;
+  font-size: 11px;
+  width: 50%;
+}
+
+a.rules:hover {
+text-decoration: underline;
+}
+
+li {
+  list-style: none;
+}
+
+/* page carousel */
+.carousel-base {
+  position: relative;
+}
+.navigation-base {
+  left: 0;
+  bottom: 10px;
+  width: 100%;
+  height: 10px;
+  text-align: center;
+  padding-top: 30px;
+  background-color: white;
+}
+.navigation-base > div {
+  display: table;
+  border-collapse: separate;
+  border-spacing: 8px 0;
+  margin: 0 auto;
+}
+.navidot {
+  display: table-cell;
+  border: 1px solid #db7093;
+  border-radius: 6px;
+  width: 10px;
+  height: 10px;
+  background-color: rgba(255,255,255,0);
+}
+.navidot-check {
+  background-color: #db7093;
+  transition-duration: 0.3s;
+}
+
+/* info */
+ul.info{
+  font-size:11px;
+  padding-left:0;
+}
+
+/* profile pic */
+.main_pic{
+  width: 200px;
+  height: 200px;
+  background-color: gainsboro;
+}
+
+.sub_pic{
+  width: 100px;
+  height: 100px;
+  background-color: gainsboro;
+}
+
+label.pic {
+     background-color: gainsboro;
+     color: gray;
+     cursor: pointer;
+     margin: 0 atuo;
+     display: inline-block;
+     text-align: center;
+     font-size: 60px;
+}
+label input {
+     display: none;
+}
+
+p.a{
+  line-height:125px;
+  text-align:center;
+}
+
+div.main{
+  margin-left: -20px;
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+div.sub{
+  margin-left: -20px;
+  width: 100%;
+  height: auto;
+  text-align: center;
+}
+
+/* submit btn */
+div.submit {
+  margin: 55px atuo;
+  text-align: center;
+}
+
+/* drop box */
+.dropbox {
+margin: 0 auto;
+border: 1px solid palevioletred;
+color: black;
+opacity: .7;
+border-radius: 10px;
+padding: 20px;
+text-align: center;
+height: 40px;
+transition: all .3s;
+-moz-transition: all .3s;
+font-size: 16px;
+outline: none;
+background-color:#fff;
+}
+
+.dropbox:focus {
+width: 75%;
+outline: none;
+}
+
+.dropbox.birthyear {
+width: 30%;
+}
+
+.dropbox.birthyear:focus {
+width: 35%;
+outline: none;
+}
+
+.dropbox.birthday {
+width: 25%;
+}
+
+.dropbox.birthday:focus {
+width: 30%;
+}
+.dropbox.national {
+width: 60%;
+}
+
+.dropbox.national:focus {
+width: 70%;
+}
+
+/* content */
+div.conent{
+  width:100%;
+  height: auto;
+  margin-top:20px;
+  text-align: center;
+  background-color: white;
+  overflow:auto;
+}
+
+/* for mypage */
+/* pic */
+img.profile {
+    margin-top:15px;
+    border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
+    width:  200px;       /* ※縦横を同値に */
+    height: 200px;       /* ※縦横を同値に */
+    filter: drop-shadow(3px 5px 10px rgba(0,0,0,0.6));
+}
+
+/* rank label */
+li.rank{
+  border : solid 1px #ff7f7f;
+  border-radius:5px;
+  background: #ff7f7f;
+  text-align: center;
+  width: 100px;
+  height: 20px;
+  font-size: 15px;
+}
+
+li.vip{
+  border : solid 1px #FFEE5F;
+  border-radius:5px;
+  background: #FFEE5F;
+  text-align: center;
+  width: 100px;
+  height: 20px;
+  font-size: 15px;
+}
+
+/* campaing label */
+.campaing{
+  margin: 10px;
+  text-align: left;
+  display: inline-block;
+  font-weight: bold;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #FFF;
+  font-size: 11px;
+  background: linear-gradient(to right, red, orange);
+  transition: .4s;
+  width:300px;
+  border-radius: 5px;
+}
+
+/* check box */
+div.check-box{
+  margin: 0 auto 40px;
+  width:85%;
+  height: auto;
+  text-align: left;
+  font-size: 13px;
+  overflow: hidden; 
+  position: relative;
+}
+
+/* checkbox02 */
+input[type=checkbox] {
+	display: none;
+}
+input[type="checkbox"].checkbox02:checked + label {
+	background: #ffc0cb;
+	color:#000;
+}
+.check_label:hover {
+	background-color: #fff0f5;
+}
+.check_label {
+	display: block;
+	float: left;
+	margin: 5px;
+	width: auto;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	padding-left: 5px;
+	padding-right: 5px;
+	cursor: pointer;
+	color: #000;
+	border: 1px solid palevioletred;
+	border-radius: 10px;
+}
+
+/* text comment */
+textarea{
+  width: 90%;
+  height: 200px;
+  margin-bottom: 30px;
+  border-radius: 5px;
+  border: 1px solid palevioletred;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* user search result */
+img.search_result_bg
+{
+  width: 100vw;
+  height: 100vh;
+}
+.relative {
+    position: relative;
+    width: 600px;
+}
+
+/* profile discript */
+.relative {
+    position: relative;
+    width: 600px;
+}
+.profile_discript {
+    position: absolute;
+    bottom: -15px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.301);
+    width: 100%;
+    height: 25%;
+    max-width: 600px;
+    padding: 1em 0;
+    text-align: left;
+}
+.profile_discript div {
+    margin: -25px auto;
+    padding: 0 0.8em;
+    font-size: 11px;
+}
+.discript_list{
+  margin-left: 3px;
+}
+.discript_username{
+  margin-top:-10px;
+  font-size:20px;
+  font-weight: bold;
+  display: inline-block;
+}
+.discript_national{
+  font-size:20px;
+  display: inline-block;
+  padding-left:30px;
+}
+.discript_item{
+  margin-top:-15px;
+  font-size:15px;
+}

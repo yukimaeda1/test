@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+  <script src="components/loader.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <script>
+    ons.bootstrap()
+      .controller('AppController', function() {
+      });
+    ons.ready(function() {
+        console.log("Onsen UI is ready!");
+    });
+
+    if (ons.platform.isIPhoneX()) {
+      document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+      document.documentElement.setAttribute('onsflag-iphonex-landscape', '');
+    }
+    var app = {};
+
+  ons.ready(function () {
+    ons.createElement('registLogin.html', { append: true })
+      .then(function (sheet) {
+        app.showRegistList = sheet.show.bind(sheet);
+        app.hideRegistList = sheet.hide.bind(sheet);
+      });
+  });
+
+  var showRulesDialog = function() {
+  var dialog = document.getElementById('my-dialog');
+
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement('dialog.html', { append: true })
+      .then(function(dialog) {
+        dialog.show();
+      });
+  }
+};
+
+var hideDialog = function(id) {
+  document
+    .getElementById(id)
+    .hide();
+};
+  </script>
+</head>
+<body class="background">
+
+  <!-- rules -->
+  <div class="rules">
+    <a class="rules" onclick="showRulesDialog()"> こちらをクリックして利用規約・利用規制を読んで下さい。登録・ログインすると、当社の利用規約・利用規制に同意することになります。</a>
+  </div>
+
+  <!-- login form -->
+  <div class="login-btn">
+    <!-- new regist -->
+    <li class="loginList__item"><a class="loginList__link icon-regist" onclick="app.showRegistList()" title="新規登録"></a></li>
+
+    <!-- login -->
+    <hr style="width:70%; margin-top:70px;border:2;border-top:1px;">
+    <p style="font-size:11px;">ログインはこちらから</p>
+    <div class="login">
+      <a class="login"
+      onclick="location.href='./main.html'"><ons-icon icon="facebook-f"></ons-icon></a>
+      <a class="login" href="#"><ons-icon icon="phone"></ons-icon></a>
+      <a class="login" href="#"><ons-icon icon="line"></ons-icon></a>
+      <a class="login" href="#"><ons-icon icon="comment"></ons-icon></a>
+    </div>
+
+  </div>
+
+  <!-- login regist list Dialog-->
+  <template id="registLogin.html">
+  <ons-action-sheet id="sheet" cancelable title="登録方法を選択">
+    <ons-action-sheet-button icon="md-square-o" onclick="location.href='./registInformation.html'">Facebook</ons-action-sheet-button>
+    <ons-action-sheet-button icon="md-square-o" onclick="#">LINE</ons-action-sheet-button>
+    <ons-action-sheet-button icon="md-square-o" onclick="#">電話番号</ons-action-sheet-button>
+    <ons-action-sheet-button icon="md-square-o" onclick="#">KAKAO</ons-action-sheet-button>
+    <ons-action-sheet-button icon="md-close" onclick="app.hideRegistList()">Cancel</ons-action-sheet-button>
+  </ons-action-sheet>
+  </template>
+
+  <!-- rules dialog -->
+  <template id="dialog.html">
+  <ons-dialog id="my-dialog">
+    <div style="text-align: center; padding: 10px;">
+      <p>
+        This is our rule!
+      </p>
+
+      <p>
+        <ons-button onclick="hideDialog('my-dialog')">Agree</ons-button>
+      </p>
+    </div>
+  </ons-dialog>
+  </template>
+
+
+</body>
+</html>
+
+

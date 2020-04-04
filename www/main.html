@@ -1,0 +1,1496 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- flag link -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.9.0/css/flag-icon.css" rel="stylesheet">
+
+  <script src="components/loader.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <script src="components/upload_pic.js"></script>  
+
+  <script>
+    ons.bootstrap()
+      .controller('AppController', function() {
+      });
+    ons.ready(function() {
+        console.log("Onsen UI is ready!");
+    });
+
+    if (ons.platform.isIPhoneX()) {
+      document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+      document.documentElement.setAttribute('onsflag-iphonex-landscape', '');
+    }
+
+    var createAlertDialog = function() {
+      var dialog = document.getElementById('my-alert-dialog');
+
+      if (dialog) {
+        dialog.show();
+      } else {
+        ons.createElement('alert-dialog.html', { append: true })
+          .then(function(dialog) {
+            dialog.show();
+          });
+      }
+    };
+
+    var deleteAlertDialog = function() {
+      var dialog = document.getElementById('delete-dialog');
+
+      if (dialog) {
+        dialog.show();
+      } else {
+        ons.createElement('delete-dialog.html', { append: true })
+          .then(function(dialog) {
+            dialog.show();
+          });
+      }
+    };
+
+
+  var hideAlertDialog = function() {
+    document
+      .getElementById('my-alert-dialog')
+      .hide();
+  };
+
+  var hideDeleteAlertDialog = function() {
+  document
+    .getElementById('delete-alert-dialog')
+    .hide();
+  };
+
+  var notify = function() {
+    ons.notification.alert('This dialog was created with ons.notification');
+  };
+  var submit= function() {
+    // hide my-alert-dialog
+    document
+    .getElementById('my-alert-dialog')
+    .hide();
+    
+    var dialog = document.getElementById('my-dialog');
+
+    if (dialog) {
+      dialog.show();
+    } else {
+      ons.createElement('dialog.html', { append: true })
+        .then(function(dialog) {
+          dialog.show();
+        });
+    }
+  }
+
+  var deleteSubmit= function() {
+    // hide my-alert-dialog
+    document
+    .getElementById('delete-alert-dialog')
+    .hide();
+    
+    var dialog = document.getElementById('my-delete-dialog');
+
+    if (dialog) {
+      dialog.show();
+    } else {
+      ons.createElement('deleteDialog.html', { append: true })
+        .then(function(dialog) {
+          dialog.show();
+        });
+    }
+  }
+
+  var hideDialog = function(id) {
+      document
+    .getElementById(id)
+    .hide();
+  };
+
+  var showRulesDialog = function() {
+  var dialog = document.getElementById('my-dialog');
+    if (dialog) {
+      dialog.show();
+    } else {
+      ons.createElement('dialog.html', { append: true })
+        .then(function(dialog) {
+          dialog.show();
+        });
+    }
+  };
+
+  </script>
+  
+</head>
+<body>
+
+  <!-- nav -->
+  <ons-navigator swipeable id="myNavigator" page="main.html"></ons-navigator>
+
+  <!-- main page -->
+  <ons-template id="main.html">
+  <ons-page id="main" ng-controller="AppController as app">
+
+    <!-- header -->
+    <ons-toolbar style="background-color:#F62C63; height:70px;">
+
+      <!-- page title -->
+      <div class="center" style="color:white;"><p style="text-align:center;font-weight:bold;">{{app.title}}</p></div>
+
+      <!-- My page -->
+      <div class="left" style="text-align:left">
+        <ons-toolbar-button style="color:white; font-weight:bold;" onclick="myNavigator.pushPage('myPage.html', { animation : 'lift' } );">
+          <ons-icon icon="address-card" style="font-size: 32px; width: 1em;position:absolute; bottom:0%"></ons-icon>
+        </ons-toolbar-button>
+      </div>
+
+      <!-- header right icon -->
+      <div class="right" style="padding-right:20px;">
+        <!-- update searching settings page -->
+        <ons-toolbar-button style="color:white;" onclick="location.href='./update_search.html'" ng-if="app.title == 'Search'"> <ons-icon icon="sliders-h" style="position:absolute; bottom:0%"></ons-icon>
+        </ons-toolbar-button>
+
+        <!-- message history page -->        
+        <ons-toolbar-button style="color:white;" onclick="myNavigator.pushPage('message_history.html', { animation : 'lift' } );" ng-if="app.title == 'Message'"> <ons-icon icon="history" style="position:absolute; bottom:0%"></ons-icon>
+        </ons-toolbar-button>  
+
+      </div>
+
+    </ons-toolbar>
+    
+    <!-- footer -->    
+    <ons-tabbar>
+      <ons-tab page="search_result.html" label="Search" icon="search" active></ons-tab>
+      <ons-tab page="history.html" label="History" icon="history"></ons-tab>
+      <ons-tab page="message.html" label="Message" icon="comment-dots"></ons-tab>
+      <ons-tab page="map_viewer.html" label="Map" icon="street-view"></ons-tab>
+      <ons-tab page="rounge.html" label="Rounge" icon="users"></ons-tab>
+    </ons-tabbar>  
+    </ons-page>
+  </ons-template>
+
+  <!-- search -->
+  <ons-template id="search_result.html"> 
+
+    <ons-page ons-show="app.title = 'Search'">
+
+
+
+
+
+
+
+
+  
+
+
+    <!-- js-->
+    <script type="text/javascript" src="components/searchResult.js"></script> 
+    
+    </ons-page>
+  </ons-template>
+
+  <!-- History -->
+  <ons-template id="history.html">
+    <ons-page ons-show="app.title = 'History'">
+      <div class="conent">
+        <ons-list>
+
+            <!-- list 1 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/mon.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">MoonBoomBoon</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-kr"></i>Female/67
+                <p>Korean</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b" checked>
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b">
+                    <div class="segment__button"><ons-icon icon="grin-stars"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+            <!-- list 2 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/ringo.png">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">椎名林檎</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-jp"></i>Female/41
+                <p>Japanese</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b2" checked>
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b2">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b2">
+                    <div class="segment__button"><ons-icon icon="grin-stars"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+            <!-- list 3 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/chan.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">Zhāng Zǐyí</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-cn"></i>Female/41
+                <p>Chinese</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b3" checked>
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b3">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b3">
+                    <div class="segment__button"><ons-icon icon="grin-stars"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+            <!-- list 4 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/utada.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">Hikaru Utada</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-jp"></i>Female/37
+                <p>English,Japanese,Spanish,French</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b4" checked>
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b4">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b4">
+                    <div class="segment__button"><ons-icon icon="grin-stars"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+            <!-- list 5 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/anne.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">Anne Hathaway</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-us"></i>Female/37
+                <p>English</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b5" checked>
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b5">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b5">
+                    <div class="segment__button"><ons-icon icon="grin-stars"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+        </ons-list>
+      </div>
+      <ons-fab position="bottom right">
+        <ons-icon icon="md-plus"></ons-icon>
+      </ons-fab>
+    </ons-page>
+  </ons-template>
+
+  <!-- Message -->
+  <ons-template id="message.html">
+    <ons-page ons-show="app.title = 'Message'">
+      <div class="conent">
+        <ons-list>
+
+            <!-- room 1 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/kim.png">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">将軍様</span>
+                <!-- message -->
+                <span class="list-item__subtitle">ミサイルでムンちゃんに助けを求めたけど、あいつ自国のことで精一杯で役に立たないんだけど。
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>17:30</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 2 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/trump.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">ロケットマンの友達</span>
+                <!-- message -->
+                <span class="list-item__subtitle">頼る相手を間違えている。俺も忙しいから、暇になったら助ける。
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>17:30</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 3 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/abe.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">あべっち</span>
+                <!-- message -->
+                <span class="list-item__subtitle">
+                なんでミサイルを打ち上げるお金があるんだ？まさか。。
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>17:30</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 4 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/vol.jpeg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">誰か俺を呼んで</span>
+                <!-- message -->
+                <span class="list-item__subtitle">俺を呼んだらコロナ殺せるよ！あばーだけだーブラーーー!!
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>13:10</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 5 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/yasu.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">yasu</span>
+                <!-- message -->
+                <span class="list-item__subtitle">俺と握手した手で何をするの？
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>13:00</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 6 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/hide.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">hide</span>
+                <!-- message -->
+                <span class="list-item__subtitle">ワン、にぃ、いち、トゥー、アンドゥトロワァー
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>12:50</p>
+              </div>
+            </ons-list-item>
+
+            <!-- room 7 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/hyde.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">hyde</span>
+                <!-- message -->
+                <span class="list-item__subtitle">俺、身長ちゃんと、160cmあるよ。
+                </span>
+              </div>
+
+              <!-- time -->
+              <div class="right">
+                <p>yesterday</p>
+              </div>
+            </ons-list-item>    
+
+        </ons-list>
+      </div>
+    </ons-page>
+  </ons-template>
+
+  <!-- Message history -->
+  <ons-template id="message_history.html">
+    <ons-page ons-show="pctrl.title = 'Message History'">
+    
+      <!-- header -->
+      <ons-toolbar style="background-color:#F62C63; height:70px;">
+        <!-- back btn -->
+        <div class="left">
+        <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+        </div>
+
+        <!-- page title -->
+        <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+      </ons-toolbar>
+
+      <!-- content -->
+      <div class="conent">
+        <ons-card style="background-color:#ffffe0;">
+          <p style="font-size:15px;">うっかり消してしまったトークルームを復活させよう！<br>復活の実またはVIP会員になると復活出来るよ！</p>
+
+          <!-- store page -->
+          <ons-button modifier="large" style="background-color:#ff1414; width:auto">Item Store</ons-button>
+        </ons-card>
+
+        <!-- rooms -->
+        <ons-list>
+          <ons-list-header>スイッチをONにしてトークルームを復活させてね！</ons-list-header>
+          <!-- room 1 -->
+          <ons-list-item tappable>
+            <!-- user profile pic-->
+            <div class="left">
+              <img class="list-item__thumbnail" src="./img/goun.png">
+            </div>
+            <!-- user subscript -->
+            <div class="center" style="width:40%">
+              <!-- user name -->
+              <span class="list-item__title">김고은</span>
+              <!-- message -->
+              <span class="list-item__subtitle">ㅂㅂ
+              </span>
+            </div>
+
+            <!-- on/off -->
+            <div class="right">
+              <ons-switch></ons-switch>
+            </div>
+          </ons-list-item>
+
+          <!-- room 2 -->
+          <ons-list-item tappable>
+            <!-- user profile pic-->
+            <div class="left">
+              <img class="list-item__thumbnail" src="./img/angela.jpg">
+            </div>
+            <!-- user subscript -->
+            <div class="center" style="width:40%">
+              <!-- user name -->
+              <span class="list-item__title">Angelababy be my baby</span>
+              <!-- message -->
+              <span class="list-item__subtitle">眼睛吃冰淇淋
+              </span>
+            </div>
+
+            <!-- on/off -->
+            <div class="right">
+              <ons-switch></ons-switch>
+            </div>
+          </ons-list-item>
+
+          <!-- room 3 -->
+          <ons-list-item tappable>
+            <!-- user profile pic-->
+            <div class="left">
+              <img class="list-item__thumbnail" src="./img/kiyoharu.jpg">
+            </div>
+            <!-- user subscript -->
+            <div class="center" style="width:40%">
+              <!-- user name -->
+              <span class="list-item__title">kiyoharu</span>
+              <!-- message -->
+              <span class="list-item__subtitle">
+              黒夢のvolcalです。
+              </span>
+            </div>
+
+            <!-- on/off -->
+            <div class="right">
+              <ons-switch></ons-switch>
+            </div>
+          </ons-list-item>
+
+        </ons-list>
+
+        <!-- submit btn -->
+        <div style="margin-top:15px; text-align:center;">
+          <ons-button modifier="large" style="width:40%; margin-left:30%">Submit</ons-button>
+        </div>
+
+      </div>
+    </ons-page>
+  </ons-template>
+
+  <!-- map -->
+  <ons-template id="map_viewer.html">
+    <ons-page ons-show="app.title = 'Map'">
+      <div class="content" style="text-align: center">
+        <ons-card>
+          <div class="title">アイテムをゲットしよう！
+          </div>
+          <div class="content">アイテムをゲットして友達と冒険の計画をしよう！地図を共有することで、旅の計画がしやすくなるぞ！いい旅には計画が大切だ。協力してくれる友達に感謝として3ベリープレゼントしよう！
+          <ons-card style="width:70%; background-color:#fafad2">
+          <p><ons-icon icon="raspberry-pi"> 空間移動の実 ✖️1</ons-icon></p> 
+          <p>12ベリー</p>
+          <p>期間: 3日</p>
+          <ons-button style="background-color:red; ">Get Item</ons-button>
+          <ons-button style="background-color:#ffd700;">Send Present</ons-button>
+          </ons-card>
+          </div>
+        </ons-card>
+
+        <img src="./img/map.png" style="filter: blur(3px);"></img>
+      </div>
+    </ons-page>
+  </ons-template>
+
+  <!-- rounge -->
+  <ons-template id="rounge.html">
+    <ons-page ons-show="app.title = 'Rounge'">
+      <div class="conent">
+        
+        <!-- user list -->
+        <ons-list>
+            <ons-list-header style="padding:3px">あなたにイイねを押した人たちだよ！ハートボタンを押したらマッチングが成立するよ！気に入った人は24時間以内に返答しよう！</ons-list-header>
+            <!-- list 1 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/ringo.png">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">椎名林檎</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-jp"></i>Female/41
+                <p>Japanese</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b">
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+            <!-- list 2 -->
+            <ons-list-item tappable>
+              <!-- user profile pic-->
+              <div class="left">
+                <img class="list-item__thumbnail" src="./img/kahuka.jpg">
+              </div>
+              <!-- user subscript -->
+              <div class="center" style="width:40%">
+                <!-- user name -->
+                <span class="list-item__title">Kafuka Shishido</span>
+                <span class="list-item__subtitle">                  <i class="flag-icon flag-icon-jp"></i>Female/34
+                <p>Japanese,English,Spanish</p>
+                </span>
+              </div>
+
+              <!-- btn list -->
+              <div class="right">
+                <div class="segment" style="width: 100px; margin: 0 auto;">
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b2">
+                    <div class="segment__button"><ons-icon icon="heart-broken"></ons-icon></div>
+                  </div>
+                  <div class="segment__item">
+                    <input type="radio" class="segment__input" name="segment-b2">
+                    <div class="segment__button"><ons-icon icon="heart"></ons-icon></div>
+                  </div>
+                </div>
+              </div>
+            </ons-list-item>
+
+        </ons-list>
+      </div>
+    </ons-page>
+  </ons-template>
+
+  <!-- my page -->
+  <ons-template id="myPage.html">
+      <ons-page id="myPage" ons-show="pctrl.title = 'My Page'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent">
+            <p class="campaing">このアプリを友達にシェアして<br>5ベリーゲットしよう！</p>
+
+            <!-- profile pic -->
+            <img class="profile" src="./img/gen.png"></img>
+
+            <!-- user name -->
+            <p>user name: Gen Hoshino</p>
+            <!-- user rank -->
+            <div style="display: inline-block;">
+              <li class="rank">海賊王</li>
+            </div>
+            <!-- user vip info -->
+            <div style="display: inline-block;">
+              <li class="vip"><ons-icon icon="crown"></ons-icon> VIP</li>
+            </div>
+            <p>所持金: 2,000ベリー</p>
+            
+            <!-- rankup info -->
+            <ons-card class="card" style="background-color:#ffffe5;">
+
+              <div class="title" style="font-size:15px; font-weight:bold;display:inline-block;">次のランク：　殿堂王</div>
+
+              <!-- about rank -->
+              <div style="display:inline-block;">
+                <ons-button modifier="quiet"><ons-icon icon="info-circle" style="font-size:8px;">What's rank?</ons-icon></ons-button>
+              </div>
+
+                <!-- rankup info detail -->
+                <div class="card__content" style="margin-top:5px;font-size:11px;">
+
+                  <!-- progress bar -->
+                  <div>
+                  <p>ランクアップまであと・・・</p>
+                  <ons-progress-bar value="20" secondary-value="100" style="width:100%;"></ons-progress-bar>
+                  <p>20%</p>
+                  </div>
+
+                  <ons-list style="margin-top:10px; margin-left:-3px" modifier="inset" class="left">
+                    <ons-list-header style="background-color:#ccccff">あなたの現在のパワー</ons-list-header>
+                    <ons-list-item>LIKE 数: 1080</ons-list-item>
+                    <ons-list-item>SUPER LIKE数: 300</ons-list-item>
+                    <ons-list-item>マッチング成立数: 620</ons-list-item>
+                  </ons-list>
+
+                  <!-- shop btn -->
+                  <div class="left" style="margin-top:15px">
+                    <p style="font-size:11px">アイテムをゲットしてランクアップしよう！</p>
+                    <ons-button modifier="large" style="background-color:#ff0000;color:#202020;text-align:left;width:35%;" onclick="myNavigator.pushPage('itemShop.html', { animation : 'lift' } );">Get Item</ons-button>
+                  </div>
+                </div>
+
+            </ons-card>
+
+
+            <!-- list -->
+            <ons-list style="margin-top:5px;">
+              <ons-list-header>Item</ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('myItem.html', { animation : 'slide' } );"><ons-icon icon="certificate"></ons-icon>　マイアイテム</ons-list-item>              
+              <ons-list-header>Settings</ons-list-header>
+                <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('modifyProfile.html', { animation : 'slide' } );"><ons-icon icon="user-alt"></ons-icon>　プロフィール</ons-list-item>
+                <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('modifySystemSettings.html', { animation : 'slide' } );"><ons-icon icon="cog"></ons-icon>　システム設定</ons-list-item>
+            </ons-list>
+
+            <!-- share -->
+            <ons-speed-dial position="top right" direction="down" style="margin-top:8px;">
+              <ons-fab>
+                <ons-icon icon="md-share"></ons-icon>
+              </ons-fab>
+              <ons-speed-dial-item>
+                <ons-icon icon="line"></ons-icon>
+              </ons-speed-dial-item>
+              <ons-speed-dial-item>
+              <ons-icon icon="md-link"></ons-icon>
+              </ons-speed-dial-item>
+            </ons-speed-dial>
+
+          </div>
+      </ons-page>
+  </ons-template>
+
+  <!-- item shop -->
+  <ons-template id="itemShop.html">
+    <ons-page id="itemShop" ons-show="pctrl.title = 'Item store'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#ffa500; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:center;">
+            <!-- user info -->
+            <ons-list>
+              <ons-list-item>
+                <div class="left">
+                  <img class="list-item__thumbnail" src="./img/gen.png">
+                </div>
+                <div class="center">
+                  <!-- user rank -->
+                  <div style="display: inline-block;">
+                    <li class="rank">海賊王</li>
+                  </div>
+                  <!-- user vip info -->
+                  <div style="display: inline-block;">
+                    <li class="vip"><ons-icon icon="crown"></ons-icon> VIP</li>
+                  </div>
+                  <span class="list-item__title">所持金:2,000ベリー</span>
+                </div>
+              </ons-list-item>
+            </ons-list>
+
+            <!-- VIP MEMBERSHIP -->
+            <div>
+              <ons-card>
+                <div class="title">
+                  <ons-icon icon="crown"></ons-icon>　VIP MEMBERSHIP
+                </div> 
+                <!-- VIP 1 -->
+                <div style="display: inline-block; width:30%;">
+                  <ons-card style="height:80px;background-color:#FFDB5C;">
+                  </ons-card>
+                </div>
+                <!-- VIP 2 -->
+                <div style="display: inline-block; width:30%;">
+                  <ons-card style="height:80px;background-color:#F47D4A;">
+                  </ons-card>
+                </div>
+                <!-- VIP 3 -->
+                <div style="display: inline-block; width:30%;">
+                  <ons-card style="height:80px;background-color:#FFEC5C;">
+                  </ons-card>
+                </div>
+                <p>・VIP表示
+                <p>・全てのアイテムが使い放題</p> 
+                <p>・LIKE、SUPERLIKE回数無制限   
+              </ons-card>
+            </div>
+
+            <!-- Item List -->
+            <ons-card>
+              <div class="title">
+                <ons-icon icon="star"></ons-icon>　アイテム
+              </div>
+              <ons-list>
+                <ons-list-item>
+                  <div class="left">
+                    <img class="list-item__thumbnail" src="https://placekitten.com/g/40/40">
+                  </div>
+                  <div class="center">
+                    <span class="list-item__title">トップの実 XXベリー</span><span class="list-item__subtitle">相手のチャッのトップに表示される。
+                    </span>
+                  </div>
+                </ons-list-item>
+                <ons-list-item>
+                  <div class="left">
+                    <img class="list-item__thumbnail" src="https://placekitten.com/g/40/40">
+                  </div>
+                  <div class="center">
+                    <span class="list-item__title">透明の実　XXベリー</span><span class="list-item__subtitle">VIP会員マークを表示しない。
+                    </span>
+                  </div>
+                </ons-list-item>
+              </ons-list>
+
+            </ons-card>
+
+
+          </div>
+    </ons-page>    
+  </ons-template>
+
+  <!-- my item -->
+  <ons-template id="myItem.html">
+    <ons-page id="myItem" ons-show="pctrl.title = 'My Items'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left;">
+            <!-- shop info -->
+            <ons-card style="background-color:#ffffdb">
+                アイテムを沢山ゲットしてレベルをアップしよう！
+
+              <ons-button modifier="large" style="width:auto; background-color:#ff0000";>今すぐアイテムをゲット！</ons-button>
+    
+            </ons-card>
+
+            <!-- vip -->
+            <ons-card>
+              <ons-list>
+                <ons-list-header>会員情報</ons-list-header>
+                <ons-list-item>VIP会員</ons-list-item>
+                <ons-list-item>開始日時：2020/3/24 12:00</ons-list-item>
+                <ons-list-item>終了日時：2020/6/24 12:00</ons-list-item>              
+              </ons-list>
+            </ons-card>
+
+            <!-- item -->
+            <ons-card>
+              <ons-list>
+                <ons-list-header>アイテム</ons-list-header>
+                <ons-list-item>空間移動の実</ons-list-item>            
+              </ons-list>
+            </ons-card>
+
+          </div>
+
+    </ons-page>
+  </ons-template>
+
+  <!-- modify profile -->
+  <template id="modifyProfile.html">
+    <ons-page id="modifyProfile" ons-show="pctrl.title = 'Profile'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left; padding-left:10px;">
+            
+            <!-- profile pic -->
+            <p><ons-icon icon="image"> プロフィール写真を登録</ons-icon></p>
+            <ul class="info">*最低一枚登録必須</ul>
+            <div class="main">
+              <label for="file" class="pic main_pic">
+              <input type="file" id="file" /><div id="result"></div>
+              </label>
+            </div>
+            <div class="sub">
+              <label for="file2" class="pic sub_pic">
+              <input type="file" id="file2" /><div id="result2"></div>
+              </label>
+              <label for="file3" class="pic sub_pic">
+              <input type="file" id="file3" /><div id="result3"></div>
+              </label>
+              <label for="file4" class="pic sub_pic">
+              <input type="file" id="file4" /><div id="result4"></div>
+              </label>
+            </div>          
+
+            <!-- username -->
+            <p><ons-icon icon="edit"> アプリで使用する名前を入力</ons-icon></p>
+            <ons-input id="username" modifier="underbar" placeholder="最大20文字" float maxlength="20"></ons-input>
+
+            <!-- national -->
+            <p><ons-icon icon="globe-asia"> 国籍</ons-icon></p>
+            <select class="dropbox national" id="national">
+              <option value="0" disabled selected style='display:none;' >国籍</option>
+            </select>
+
+            <!-- language -->
+            <p><ons-icon icon="language"> 言語</ons-icon></p>
+            <div>
+            <select class="dropbox national" id="language">
+              <option value="0" disabled selected style='display:none;' >言語</option>
+            </select>
+
+            <select class="dropbox national" id="language2">
+              <option value="0" disabled selected style='display:none;' >言語</option>
+            </select>
+            <button id="addChildren" onclick="getlang()">Add</button>
+            <div id="add_lang"></div>
+            </div>
+
+            <!-- blood type -->
+            <p><ons-icon icon="ambulance"> 血液型</ons-icon></p>
+            <ons-list style="width:80%;">
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="bloodType" input-id="a" checked></ons-radio>
+                </label>
+                <label for="a" class="center">
+                  A型
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="bloodType" input-id="b"></ons-radio>
+                </label>
+                <label for="b" class="center">
+                  B型
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="bloodType" input-id="o"></ons-radio>
+                </label>
+                <label for="o" class="center">
+                  O型
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="bloodType" input-id="ab"></ons-radio>
+                </label>
+                <label for="ab" class="center">
+                  AB型
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="bloodType" input-id="un"></ons-radio>
+                </label>
+                <label for="un" class="center">
+                  不明
+                </label>
+              </ons-list-item>
+            </ons-list>
+
+            <!-- body shape -->
+            <p><ons-icon icon="child"> 体型</ons-icon></p>
+            <div class="check-box">
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-1" class="checkbox02" /><label for="shape-1" class="check_label">痩せ型</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-2" class="checkbox02" /><label for="shape-2" class="check_label">肥満</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-3" class="checkbox02" /><label for="shape-3" class="check_label">ぽっちゃり</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-4" class="checkbox02" /><label for="shape-4" class="check_label">普通</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-5" class="checkbox02" /><label for="shape-5" class="check_label">細マッチョ</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-6" class="checkbox02" /><label for="shape-6" class="check_label">マッチョ</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-7" class="checkbox02" /><label for="shape-7" class="check_label">腹筋女子</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-8" class="checkbox02" /><label for="shape-8" class="check_label">グラマー</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-9" class="checkbox02" /><label for="shape-9" class="check_label">秘密</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-10" class="checkbox02" /><label for="shape-10" class="check_label">高身長</label>
+              <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-11" class="checkbox02" /><label for="shape-11" class="check_label">身長低め</label>
+            </div>
+
+            <!-- character -->
+            <p><ons-icon icon="smile"> 性格</ons-icon></p>
+            <div class="check-box">
+              <input type="checkbox" name="character" value="チェックボックス" id="character-1" class="checkbox02" /><label for="character-1" class="check_label">クール
+              </label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-2" class="checkbox02" /><label for="character-2" class="check_label">おおらか</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-3" class="checkbox02" /><label for="character-3" class="check_label">楽観的</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-4" class="checkbox02" /><label for="character-4" class="check_label">現実主義</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-5" class="checkbox02" /><label for="character-5" class="check_label">挑戦的</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-6" class="checkbox02" /><label for="character-6" class="check_label">寛容的</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-7" class="checkbox02" /><label for="character-7" class="check_label">優しい</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-8" class="checkbox02" /><label for="character-8" class="check_label">ツンデレ</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-9" class="checkbox02" /><label for="character-9" class="check_label">悲観的</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-10" class="checkbox02" /><label for="character-10" class="check_label">ノリが良い</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-11" class="checkbox02" /><label for="character-11" class="check_label">リーダシップ</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-12" class="checkbox02" /><label for="character-12" class="check_label">計算的</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-13" class="checkbox02" /><label for="character-13" class="check_label">真面目</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-14" class="checkbox02" /><label for="character-14" class="check_label">一途</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-15" class="checkbox02" /><label for="character-15" class="check_label">大雑把</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-16" class="checkbox02" /><label for="character-16" class="check_label">几帳面</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-17" class="checkbox02" /><label for="character-17" class="check_label">人によって変える</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-18" class="checkbox02" /><label for="character-18" class="check_label">秘密主義</label>
+              <input type="checkbox" name="character" value="チェックボックス" id="character-19" class="checkbox02" /><label for="character-19" class="check_label">面白い</label>
+            </div>
+
+            <!-- hoby -->
+            <p><ons-icon icon="heart"> 趣味</ons-icon></p>
+            <div class="check-box">
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-1" class="checkbox02" /><label for="hoby-1" class="check_label">読書
+              </label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-2" class="checkbox02" /><label for="hoby-2" class="check_label">釣り</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-3" class="checkbox02" /><label for="hoby-3" class="check_label">アウトドア</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-4" class="checkbox02" /><label for="hoby-4" class="check_label">スポーツ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-5" class="checkbox02" /><label for="hoby-5" class="check_label">ギャンブル</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-6" class="checkbox02" /><label for="hoby-6" class="check_label">植物</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-7" class="checkbox02" /><label for="hoby-7" class="check_label">動物</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-8" class="checkbox02" /><label for="hoby-8" class="check_label">プログラミング</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-9" class="checkbox02" /><label for="hoby-9" class="check_label">写真</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-10" class="checkbox02" /><label for="hoby-10" class="check_label">音楽鑑賞</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-11" class="checkbox02" /><label for="hoby-11" class="check_label">アロマ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-12" class="checkbox02" /><label for="hoby-12" class="check_label">美容</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-13" class="checkbox02" /><label for="hoby-13" class="check_label">映画鑑賞</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-14" class="checkbox02" /><label for="hoby-14" class="check_label">ライブ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-15" class="checkbox02" /><label for="hoby-15" class="check_label">テレビ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-16" class="checkbox02" /><label for="hoby-16" class="check_label">旅行</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-17" class="checkbox02" /><label for="hoby-17" class="check_label">語学</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-18" class="checkbox02" /><label for="hoby-18" class="check_label">料理</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-19" class="checkbox02" /><label for="hoby-19" class="check_label">ネットサーフィン</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-20" class="checkbox02" /><label for="hoby-20" class="check_label">カラオケ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-21" class="checkbox02" /><label for="hoby-21" class="check_label">ドライブ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-22" class="checkbox02" /><label for="hoby-22" class="check_label">お笑い</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-23" class="checkbox02" /><label for="hoby-23" class="check_label">水族館</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-24" class="checkbox02" /><label for="hoby-24" class="check_label">散歩</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-25" class="checkbox02" /><label for="hoby-25" class="check_label">ゴルフ</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-26" class="checkbox02" /><label for="hoby-26" class="check_label">コンピュータゲーム</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-27" class="checkbox02" /><label for="hoby-27" class="check_label">You Tube</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-28" class="checkbox02" /><label for="hoby-28" class="check_label">フアッション</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-29" class="checkbox02" /><label for="hoby-29" class="check_label">スピリチュアル</label>
+              <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-30" class="checkbox02" /><label for="hoby-30" class="check_label">お酒</label> 
+            </div>
+
+            <!-- comment -->
+            <p><ons-icon icon="comment"> 一言</ons-icon></p>
+            <textarea name="name" rows="8" cols="80" placeholder="最大500文字" maxlength="500"></textarea>
+
+            <!-- summit btn -->
+            <ons-fab position="bottom right" id="submit" onclick="createAlertDialog()"><ons-icon icon="user-edit"></ons-icon>
+            </ons-fab>
+          </div>
+            
+          <!-- js-->
+          <script type="text/javascript" src="components/nation.js"></script>
+          <script type="text/javascript" src="components/lang.js"></script>
+          <script type="text/javascript" src="components/addLang.js"></script>
+
+          <!-- submit dialog -->
+          <template id="alert-dialog.html">
+          <ons-alert-dialog id="my-alert-dialog" modifier="rowfooter">
+            <div class="alert-dialog-title">Alert</div>
+            <div class="alert-dialog-content">
+              こちらの内容で更新しますか？
+            </div>
+            <div class="alert-dialog-footer">
+              <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+              <ons-alert-dialog-button onclick="submit()">OK</ons-alert-dialog-button>
+            </div>
+          </ons-alert-dialog>  
+          </template>
+
+          <!-- success -->
+          <template id="dialog.html">
+            <ons-dialog id="my-dialog">
+              <div style="text-align: center; padding: 10px;">
+                <p>
+                  更新完了
+                </p>
+                <p>
+                  <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+                </p>
+              </div>
+            </ons-dialog>
+          </template>
+
+    </ons-page>
+    
+  </template> 
+
+  <!-- modify system settings -->
+  <ons-template id="modifySystemSettings.html">
+    <ons-page id="modifySystemSettings" ons-show="pctrl.title = 'System Settings'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent">
+            <ons-list>
+              <ons-list-header>Settings</ons-list-header>
+              <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('modifyAcount.html', { animation : 'slide' } );"><ons-icon icon="id-card"></ons-icon>　アカウント</ons-list-item>
+              <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('modifyPush.html', { animation : 'slide' } );"><ons-icon icon="lock"></ons-icon>　通知</ons-list-item>
+              <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('modifyLanguage.html', { animation : 'slide' } );"><ons-icon icon="language"></ons-icon>　言語</ons-list-item>            
+              <ons-list-item modifier="chevron" tappable onclick="showRulesDialog()"><ons-icon icon="file-alt"></ons-icon>　利用規約・利用規制</ons-list-item>  
+            </ons-list>
+          </div>
+
+        <!-- rules dialog -->
+        <template id="dialog.html">
+        <ons-dialog id="my-dialog">
+          <div style="text-align: center; padding: 10px">
+            <p>
+              This is our rule!
+            </p>
+
+            <p>
+              <ons-button onclick="hideDialog('my-dialog')">OK</ons-button>
+            </p>
+          </div>
+        </ons-dialog>
+        </template>
+
+    </ons-page>
+  </ons-template>
+
+  <!-- modify account -->
+  <ons-template id="modifyAcount.html">
+    <ons-page id="modifyAcount" ons-show="pctrl.title = 'Acount'">
+      
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left; height:100%;" overscrollable auto-scroll>
+
+              <ons-list>
+                <ons-list-header>アカウント情報</ons-list-header>
+                <ons-list-item>ユーザー名：Gen Hoshino</ons-list-item>
+                <ons-list-item>ログイン情報：FaceBook</ons-list-item>
+                <ons-list-item>性別：男</ons-list-item>
+                <ons-list-item>誕生日：1981/1/28</ons-list-item>
+                <ons-list-item>星座：水瓶座</ons-list-item>
+                <ons-list-item>年齢：39</ons-list-item>
+                <ons-list-header style="margin-top:30px">ランク情報</ons-list-header>
+                <ons-list-item>ランク：海賊王</ons-list-item>
+                <ons-list-item>会員：VIP</ons-list-item> 
+                <ons-list-header style="margin-top:30px">位置情報</ons-list-header>
+                <ons-list-item>位置：Japan</ons-list-item>  
+                <ons-list-header style="margin-top:30px">ベリー</ons-list-header>
+                <ons-list-item>2,000ベリー</ons-list-item>  
+                <ons-list-header style="margin-top:30px">ログイン</ons-list-header>                <ons-list-item modifier="chevron" tappable onclick="createAlertDialog()" id="logout">ログアウト</ons-list-item>    <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('deleteAccount.html', { animation : 'slide' } );" id="delete_account">アカウント削除</ons-list-item> 
+              </ons-list>   
+          </div>
+
+          <!-- logout dialog -->
+          <template id="alert-dialog.html">
+          <ons-alert-dialog id="my-alert-dialog" modifier="rowfooter">
+            <div class="alert-dialog-title">Alert</div>
+            <div class="alert-dialog-content">
+              ログアウトしますか？
+            </div>
+            <div class="alert-dialog-footer">
+              <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+              <ons-alert-dialog-button onclick="submit()">OK</ons-alert-dialog-button>
+            </div>
+          </ons-alert-dialog>  
+          </template>
+
+          <!-- logout success -->
+          <template id="dialog.html">
+            <ons-dialog id="my-dialog">
+              <div style="text-align: center; padding: 10px;">
+                <p>
+                  完了
+                </p>
+                <p>
+                  <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+                </p>
+              </div>
+            </ons-dialog>
+          </template>
+        
+    </ons-page>
+  </ons-template>
+
+  <!-- delete Account -->
+  <ons-template id="deleteAccount.html">
+    <ons-page id="deleteAccount" ons-show="pctrl.title = 'Delete Account'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left;height:100%;" overscrollable auto-scroll>
+            <ons-list>
+              <ons-list-header>アカウントが削除されます</ons-list-header>
+              <ons-list-item>アカウントの削除プロセスを開始します。表示名、ユーザー名、公開プロフィールは表示されなくなります。</ons-list-item>
+              <ons-list-header style="margin-top:40px">マイアイテム・ベリーについて</ons-list-header>
+              <ons-list-item>アカウントの削除プロセスが完了するとマイアイテム・ベリーも失効します。</ons-list-item>
+              <ons-list-item modifier="chevron" tappable onclick="myNavigator.pushPage('myItem.html', { animation : 'slide' } );">マイアイテム・ベリーをみる</ons-list-item> 
+              <ons-list-header style="margin-top:40px">その他ヒント</ons-list-header>
+              <ons-list-item style="margin-top:10px">
+                アカウントを間違って削除した場合でも、アカウント削除から30日以内であればアカウントを復活させることが出来ます。(アカウント復活には費用が発生します。)
+              </ons-list-item>
+              <ons-list-item style="margin-top:10px">
+                アカウントを間違って削除した場合でも、アカウント削除から30日以内であればメッセージを復活させることが出来ます。(アカウント復活費用とメッセージ復活費用が発生します。)
+              </ons-list-item>
+              <ons-list-item style="margin-top:10px">
+                アカウントを削除しなくても、ログアウトして、別の登録方法から新規アカウントが作成出来ます。
+              </ons-lis-item>
+            </ons-list>
+
+            <!-- delete btn -->
+            <ons-button modifier="large--quiet" onclick="deleteAlertDialog()">アカウントを削除</ons-button>
+
+          </div>
+
+          <!-- delete account dialog -->
+          <template id="delete-dialog.html">
+          <ons-alert-dialog id="delete-alert-dialog" modifier="rowfooter">
+            <div class="alert-dialog-title">Alert</div>
+            <div class="alert-dialog-content">
+              それでもアカウントを削除しますか？
+            </div>
+            <div class="alert-dialog-footer">
+              <ons-alert-dialog-button onclick="hideDeleteAlertDialog()">Cancel</ons-alert-dialog-button>
+              <ons-alert-dialog-button onclick="deleteSubmit()">OK</ons-alert-dialog-button>
+            </div>
+          </ons-alert-dialog>  
+          </template>
+
+          <!-- delete account success -->
+          <template id="deleteDialog.html">
+            <ons-dialog id="my-delete-dialog">
+              <div style="text-align: center; padding: 10px;">
+                <p>
+                  削除完了
+                  <br>ご利用ありがとうございました。
+                  <br>30日以内であればアカウントの復活が出来ます。
+                </p>
+                <p>
+                  <ons-button onclick="hideDialog('my-delete-dialog')">Close</ons-button>
+                </p>
+              </div>
+            </ons-dialog>
+          </template>
+
+    </ons-page>
+  </ons-template>
+
+  <!-- modify Push -->
+  <ons-template id="modifyPush.html">
+    <ons-page id="modifyPush" ons-show="pctrl.title = 'Push'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left;">
+            <ons-list>
+              <ons-list-header>Settings</ons-list-header>
+              <!-- new message push -->
+              <ons-list-item>
+                <div class="center">
+                  メッセージ通知
+                </div>
+                <div class="right">
+                  <ons-switch checked></ons-switch>
+                </div>
+              </ons-list-item>         
+              <!-- new app content push -->
+              <ons-list-item>
+                <div class="center">
+                  アプリイベント通知
+                </div>
+                <div class="right">
+                  <ons-switch checked></ons-switch>
+                </div>
+              </ons-list-item>
+            </ons-list>
+          </div>
+
+    </ons-page>
+  </ons-template>
+
+  <!-- modify Language -->
+  <ons-template id="modifyLanguage.html">
+    <ons-page id="modifyLanguage" ons-show="pctrl.title = 'System Language'">
+
+          <!-- header -->
+          <ons-toolbar id="toolbar" style="background-color:#513ED5; height:70px;">
+              <!-- back btn -->
+              <div class="left">
+              <ons-back-button style="color:white; font-weight:bold;position:absolute; bottom:0%">Back</ons-back-button>
+              </div>
+
+              <!-- page title -->
+              <div class="center"><p style="color:white;">{{pctrl.title}}</p></div>
+          </ons-toolbar>
+
+          <!-- content -->
+          <div class="conent" style="text-align:left;">
+            <ons-list>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="systemlang" input-id="jp" checked></ons-radio>
+                </label>
+                <label for="jp" class="center">
+                  Japanese
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="systemlang" input-id="kr"></ons-radio>
+                </label>
+                <label for="kr" class="center">
+                  Korean
+                </label>
+              </ons-list-item>
+              <ons-list-item tappable>
+                <label class="left">
+                  <ons-radio name="systemlang" input-id="en"></ons-radio>
+                </label>
+                <label for="en" class="center">
+                  English
+                </label>
+              </ons-list-item>
+            </ons-list>
+            
+          </div>      
+    </ons-page>
+  </ons-template>
+
+
+
+</body>
+</html>
+

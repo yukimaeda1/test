@@ -1,0 +1,397 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+
+  <link rel="stylesheet" href="css/style.css" type="text/css"> 
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+
+  <script src="components/loader.js"></script>
+  <script src="lib/angular/angular.min.js"></script>
+  <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+  <script src="components/upload_pic.js"></script>
+
+  <script>
+    ons.bootstrap()
+      .controller('AppController', function() {
+      });
+    ons.ready(function() {
+        console.log("Onsen UI is ready!");
+    });
+
+    if (ons.platform.isIPhoneX()) {
+      document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+      document.documentElement.setAttribute('onsflag-iphonex-landscape', '');
+    }
+        "use strict";
+    ons.ready(function() {
+      var carousel = document.querySelector("ons-carousel");
+      var navigation = document.querySelector(".navigation-base div");
+      if (carousel && navigation) {
+        for (var i = 0; i < carousel.itemCount; i++) {
+          var dot = document.createElement("div");
+          dot.id = "navidot" + i.toString();
+          dot.classList.add("navidot");
+          navigation.appendChild(dot);
+        }
+      }
+      carousel.addEventListener("postchange", function (e) {
+        setDotNavigationCheck(e.activeIndex);
+      });
+      setDotNavigationCheck(carousel.getActiveIndex());
+    });
+    var setDotNavigationCheck = function (index) {
+      var carousel = document.querySelector("ons-carousel");
+      for (var i = 0; i < carousel.itemCount; i++) {
+        var dot = document.querySelector("#navidot" + i.toString());
+        if (dot) {
+          if (i == index) {
+            if (!dot.classList.contains("navidot-check")) {
+              dot.classList.add("navidot-check");
+            }
+          } else {
+            if (dot.classList.contains("navidot-check")) {
+              dot.classList.remove("navidot-check");
+            }
+          }
+        }
+      }
+    }
+    var createAlertDialog = function() {
+  var dialog = document.getElementById('my-alert-dialog');
+
+  if (dialog) {
+    dialog.show();
+  } else {
+    ons.createElement('alert-dialog.html', { append: true })
+      .then(function(dialog) {
+        dialog.show();
+      });
+  }
+};
+var hideAlertDialog = function() {
+  document
+    .getElementById('my-alert-dialog')
+    .hide();
+};
+
+var notify = function() {
+  ons.notification.alert('This dialog was created with ons.notification');
+};
+  var submit= function() {
+    var dialog = document.getElementById('my-dialog');
+
+    if (dialog) {
+      dialog.show();
+    } else {
+      ons.createElement('dialog.html', { append: true })
+        .then(function(dialog) {
+          dialog.show();
+        });
+    }
+  }
+  var hideDialog = function(id) {
+    location.href="./main.html"
+  };
+  </script>
+</head>
+
+<body>
+    <ons-page>
+    <ons-toolbar style="background-color:#F62C63; height:70px;">
+      <div class="center" style="color:white; font-weight:bold;position:absolute; bottom:0%">新規登録</div>
+    </ons-toolbar>
+      <ons-carousel fullscreen swipeable auto-scroll overscrollable id="carousel" style="width: 100%;">
+        
+        <!-- register page1 -->
+        <ons-carousel-item style="background-color: #fff;">
+          <div style="text-align: left; font-size: 15px; margin-top:30px; padding-left:20px; color: #000000; overflow:auto; width:100%;height:100%;">
+          <!-- profile pic -->
+          <p><ons-icon icon="image"> プロフィール写真を登録</ons-icon></p>
+          
+          <ul class="info">*最低一枚登録必須</ul>
+          <div class="main">
+            <label for="file" class="pic main_pic">
+            <input type="file" id="file" /><div id="result"></div>
+            </label>
+          </div>
+          <div class="sub">
+            <label for="file2" class="pic sub_pic">
+            <input type="file" id="file2" /><div id="result2"></div>
+            </label>
+            <label for="file3" class="pic sub_pic">
+            <input type="file" id="file3" /><div id="result3"></div>
+            </label>
+            <label for="file4" class="pic sub_pic">
+            <input type="file" id="file4" /><div id="result4"></div>
+            </label>
+          </div>
+              
+          <!-- username -->
+          <p><ons-icon icon="edit"> アプリで使用する名前を入力</ons-icon></p>
+          <ons-input id="username" modifier="underbar" placeholder="最大20文字" float maxlength="20" style="width:250px;"></ons-input>
+  
+          <!-- birhday -->
+          <p><ons-icon icon="birthday-cake"> 生年月日</ons-icon></p>
+          <ul class="info">*変更後登録不可</ul>
+          <select class="dropbox birthyear" id="year" onchange="getAge()">
+          <option value="0" disabled selected style='display:none;'>年</option>
+          </select>
+          <select class="dropbox birthday" id="month" onchange="getAge()">
+          <option value="0" disabled selected style='display:none;'>月</option>
+          </select>
+          <select class="dropbox birthday" id="day" onchange="getAge()">
+          <option value="0" disabled selected style='display:none;' >日</option>
+          </select>
+
+          <!-- show calcAge     -->
+          <ul class="info" id="age"></ul>
+
+          <!-- sex -->
+          <p><ons-icon icon="venus-mars"> 性別</ons-icon></p>
+          <ul class="info">*変更後登録不可</ul> 
+          <ons-list style="width:80%;">
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="sex" input-id="female" checked></ons-radio>
+              </label>
+              <label for="female" class="center">
+                女性
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="sex" input-id="male"></ons-radio>
+              </label>
+              <label for="male" class="center">
+                男性
+              </label>
+          </ons-list>
+
+          <!-- national -->
+          <p><ons-icon icon="globe-asia"> 国籍</ons-icon></p>
+          <select class="dropbox national" id="national">
+            <option value="0" disabled selected style='display:none;' >国籍</option>
+          </select>
+
+          <!-- language -->
+          <p><ons-icon icon="language"> 言語</ons-icon></p>
+          <div style="height:30%;">
+          <select class="dropbox national" id="language">
+            <option value="0" disabled selected style='display:none;' >言語</option>
+          </select>
+
+          <select class="dropbox national" id="language2">
+            <option value="0" disabled selected style='display:none;' >言語</option>
+          </select>
+          <button id="addChildren" onclick="getlang()">Add</button>
+          <div id="add_lang"></div>
+          </div>
+
+          </div>
+        </ons-carousel-item>
+        
+        <!-- regist page2 -->
+        <ons-carousel-item style="background-color: #fff;">
+          <div style="text-align: left; font-size: 15px; margin-top:30px; padding-left:20px; color: #000000; overflow:auto; width:100%;height:100%;">
+
+          <!-- info box -->
+          <ons-card style="background-color:#fffacd; width:80%;">
+            <div class="title" style="font-size:13px; font-weight:bold">
+              Info
+            </div>
+            <div class="content">
+              <p style="font-size:10px;">このページはスキップ出来ます。<br>ログイン後、マイページで修正して下さい。</p>
+            </div>
+          </ons-card>
+
+          <!-- blood type -->
+          <p><ons-icon icon="ambulance"> 血液型</ons-icon></p>
+          <ons-list style="width:80%;">
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="bloodType" input-id="a" checked></ons-radio>
+              </label>
+              <label for="a" class="center">
+                A型
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="bloodType" input-id="b"></ons-radio>
+              </label>
+              <label for="b" class="center">
+                B型
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="bloodType" input-id="o"></ons-radio>
+              </label>
+              <label for="o" class="center">
+                O型
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="bloodType" input-id="ab"></ons-radio>
+              </label>
+              <label for="ab" class="center">
+                AB型
+              </label>
+            </ons-list-item>
+            <ons-list-item tappable>
+              <label class="left">
+                <ons-radio name="bloodType" input-id="un"></ons-radio>
+              </label>
+              <label for="un" class="center">
+                不明
+              </label>
+            </ons-list-item>
+          </ons-list>
+
+          <!-- body shape -->
+          <p><ons-icon icon="child"> 体型</ons-icon></p>
+          <div class="check-box">
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-1" class="checkbox02" /><label for="shape-1" class="check_label">痩せ型</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-2" class="checkbox02" /><label for="shape-2" class="check_label">肥満</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-3" class="checkbox02" /><label for="shape-3" class="check_label">ぽっちゃり</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-4" class="checkbox02" /><label for="shape-4" class="check_label">普通</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-5" class="checkbox02" /><label for="shape-5" class="check_label">細マッチョ</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-6" class="checkbox02" /><label for="shape-6" class="check_label">マッチョ</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-7" class="checkbox02" /><label for="shape-7" class="check_label">腹筋女子</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-8" class="checkbox02" /><label for="shape-8" class="check_label">グラマー</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-9" class="checkbox02" /><label for="shape-9" class="check_label">秘密</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-10" class="checkbox02" /><label for="shape-10" class="check_label">高身長</label>
+            <input type="checkbox" name="bodyshape" value="チェックボックス" id="shape-11" class="checkbox02" /><label for="shape-11" class="check_label">身長低め</label>
+          </div>
+
+          <!-- character -->
+          <p><ons-icon icon="smile"> 性格</ons-icon></p>
+          <div class="check-box">
+            <input type="checkbox" name="character" value="チェックボックス" id="character-1" class="checkbox02" /><label for="character-1" class="check_label">クール
+            </label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-2" class="checkbox02" /><label for="character-2" class="check_label">おおらか</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-3" class="checkbox02" /><label for="character-3" class="check_label">楽観的</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-4" class="checkbox02" /><label for="character-4" class="check_label">現実主義</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-5" class="checkbox02" /><label for="character-5" class="check_label">挑戦的</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-6" class="checkbox02" /><label for="character-6" class="check_label">寛容的</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-7" class="checkbox02" /><label for="character-7" class="check_label">優しい</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-8" class="checkbox02" /><label for="character-8" class="check_label">ツンデレ</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-9" class="checkbox02" /><label for="character-9" class="check_label">悲観的</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-10" class="checkbox02" /><label for="character-10" class="check_label">ノリが良い</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-11" class="checkbox02" /><label for="character-11" class="check_label">リーダシップ</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-12" class="checkbox02" /><label for="character-12" class="check_label">計算的</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-13" class="checkbox02" /><label for="character-13" class="check_label">真面目</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-14" class="checkbox02" /><label for="character-14" class="check_label">一途</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-15" class="checkbox02" /><label for="character-15" class="check_label">大雑把</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-16" class="checkbox02" /><label for="character-16" class="check_label">几帳面</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-17" class="checkbox02" /><label for="character-17" class="check_label">人によって変える</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-18" class="checkbox02" /><label for="character-18" class="check_label">秘密主義</label>
+            <input type="checkbox" name="character" value="チェックボックス" id="character-19" class="checkbox02" /><label for="character-19" class="check_label">面白い</label>
+          </div>
+
+          <!-- hoby -->
+          <p><ons-icon icon="heart"> 趣味</ons-icon></p>
+          <div class="check-box">
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-1" class="checkbox02" /><label for="hoby-1" class="check_label">読書
+            </label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-2" class="checkbox02" /><label for="hoby-2" class="check_label">釣り</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-3" class="checkbox02" /><label for="hoby-3" class="check_label">アウトドア</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-4" class="checkbox02" /><label for="hoby-4" class="check_label">スポーツ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-5" class="checkbox02" /><label for="hoby-5" class="check_label">ギャンブル</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-6" class="checkbox02" /><label for="hoby-6" class="check_label">植物</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-7" class="checkbox02" /><label for="hoby-7" class="check_label">動物</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-8" class="checkbox02" /><label for="hoby-8" class="check_label">プログラミング</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-9" class="checkbox02" /><label for="hoby-9" class="check_label">写真</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-10" class="checkbox02" /><label for="hoby-10" class="check_label">音楽鑑賞</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-11" class="checkbox02" /><label for="hoby-11" class="check_label">アロマ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-12" class="checkbox02" /><label for="hoby-12" class="check_label">美容</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-13" class="checkbox02" /><label for="hoby-13" class="check_label">映画鑑賞</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-14" class="checkbox02" /><label for="hoby-14" class="check_label">ライブ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-15" class="checkbox02" /><label for="hoby-15" class="check_label">テレビ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-16" class="checkbox02" /><label for="hoby-16" class="check_label">旅行</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-17" class="checkbox02" /><label for="hoby-17" class="check_label">語学</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-18" class="checkbox02" /><label for="hoby-18" class="check_label">料理</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-19" class="checkbox02" /><label for="hoby-19" class="check_label">ネットサーフィン</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-20" class="checkbox02" /><label for="hoby-20" class="check_label">カラオケ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-21" class="checkbox02" /><label for="hoby-21" class="check_label">ドライブ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-22" class="checkbox02" /><label for="hoby-22" class="check_label">お笑い</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-23" class="checkbox02" /><label for="hoby-23" class="check_label">水族館</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-24" class="checkbox02" /><label for="hoby-24" class="check_label">散歩</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-25" class="checkbox02" /><label for="hoby-25" class="check_label">ゴルフ</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-26" class="checkbox02" /><label for="hoby-26" class="check_label">コンピュータゲーム</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-27" class="checkbox02" /><label for="hoby-27" class="check_label">You Tube</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-28" class="checkbox02" /><label for="hoby-28" class="check_label">フアッション</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-29" class="checkbox02" /><label for="hoby-29" class="check_label">スピリチュアル</label>
+            <input type="checkbox" name="hoby" value="チェックボックス" id="hoby-30" class="checkbox02" /><label for="hoby-30" class="check_label">お酒</label> 
+          </div>
+
+          <!-- comment -->
+          <p><ons-icon icon="comment"> 一言</ons-icon></p>
+          <textarea name="name" rows="8" cols="80" placeholder="最大500文字" maxlength="500"></textarea>
+
+
+          <!-- summit btn -->
+          <ons-fab position="bottom right" style="font-size:18px;width:60px;height:60px;font-weight:bold;" id="submit" onclick="createAlertDialog()">
+            登録
+          </ons-fab>
+        </div>
+        </ons-carousel-item>
+      </ons-carousel>
+
+      <!-- show page section -->
+      <div class="navigation-base">
+        <div></div>
+      </div>
+  </ons-page>
+
+  <!-- js for calculate age -->
+  <script type="text/javascript" src="components/birthday.js"></script>
+  <script type="text/javascript" src="components/nation.js"></script>
+  <script type="text/javascript" src="components/lang.js"></script>
+  <script type="text/javascript" src="components/calcAge.js"></script>
+  <script type="text/javascript" src="components/addLang.js"></script>
+
+  <!-- submit dialog -->
+  <template id="alert-dialog.html">
+  <ons-alert-dialog id="my-alert-dialog" modifier="rowfooter">
+    <div class="alert-dialog-title">Alert</div>
+    <div class="alert-dialog-content">
+      こちらの内容で登録しますか？
+    </div>
+    <div class="alert-dialog-footer">
+      <ons-alert-dialog-button onclick="hideAlertDialog()">Cancel</ons-alert-dialog-button>
+      <ons-alert-dialog-button onclick="submit()">OK</ons-alert-dialog-button>
+    </div>
+  </ons-alert-dialog>  
+  </template>
+
+  <!-- 登録完了通知 -->
+  <template id="dialog.html">
+    <ons-dialog id="my-dialog">
+      <div style="text-align: center; padding: 10px;">
+        <p>
+          登録ありがとうございます。
+          <br>登録が完了しました。
+        </p>
+
+        <p>
+          <ons-button onclick="hideDialog('my-dialog')">Close</ons-button>
+        </p>
+      </div>
+    </ons-dialog>
+  </template>
+
+
+
+
+</body>
+</html>
+
